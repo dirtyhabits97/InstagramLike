@@ -77,18 +77,32 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                 return
             }
             print("Succesfully created user", user?.uid ?? "")
-            guard let uid = user?.uid else { return }
-            let usernameValues = ["username":username]
-            let values = [uid : usernameValues]
-            
-            FIRDatabase.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (err, reference) in
-                //reference is a reference to Firebase database
+            guard let image = self.plusPhotoButton.imageView?.image else { return }
+            guard let uploadData = UIImageJPEGRepresentation(image, 0.3) else { return }
+            let filename = NSUUID().uuidString
+            FIRStorage.storage().reference().child("profile_images").child(filename).put(uploadData, metadata: nil, completion: { (metadata, err) in
                 if let err = err {
-                    print("Failed to save user info into db: ", err)
+                    print("Failed to upload profile image: ", err)
                     return
                 }
-                print("Succesfully saved the user into the database")
+                guard let profileImageUrl = metadata?.downloadURL()?.absoluteString else { return }
+                print("Succesfully uploaded profile image: ", profileImageUrl)
+                
+                guard let uid = user?.uid else { return }
+                let dictionaryValues = ["username":username, "profileImageUrl":profileImageUrl]
+                let values = [uid : dictionaryValues]
+                
+                FIRDatabase.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (err, reference) in
+                    //reference is a reference to Firebase database
+                    if let err = err {
+                        print("Failed to save user info into db: ", err)
+                        return
+                    }
+                    print("Succesfully saved the user into the database")
+                })
+
             })
+            
         })
     }
     
