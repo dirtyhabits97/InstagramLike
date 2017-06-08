@@ -65,6 +65,60 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         return button
     }()
     
+    let alreadyHaveAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let attributedTitle = NSMutableAttributedString(string: "Already have an account? ", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName:UIColor.lightGray])
+        attributedTitle.append(NSAttributedString(string: "Log In", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14), NSForegroundColorAttributeName:UIColor.init(r: 17, g: 154, b: 237)]))
+        
+        button.setAttributedTitle(attributedTitle, for: .normal)
+        button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    // MARK: - View Lifecycles
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupLoginButton()
+        setupViews()
+        setupInputFields()
+    }
+    
+    fileprivate func setupViews() {
+        view.addSubview(plusPhotoButton)
+        plusPhotoButton.snp.makeConstraints { (make) in
+            make.height.width.equalTo(140)
+            make.centerX.equalTo(view)
+            make.top.equalTo(view).offset(40)
+        }
+    }
+    
+    fileprivate func setupInputFields() {
+        let stackView = UIStackView(arrangedSubviews: [emailTextField,usernameTextField,passwordTextField, signupButton])
+        stackView.distribution = .fillEqually
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        view.addSubview(stackView)
+        stackView.snp.makeConstraints { (make) in
+            make.top.equalTo(plusPhotoButton.snp.bottom).offset(20)
+            make.left.equalTo(view).offset(40)
+            make.right.equalTo(view).offset(-40)
+            make.height.equalTo(200)
+        }
+    }
+    
+    fileprivate func setupLoginButton() {
+        view.addSubview(alreadyHaveAccountButton)
+        alreadyHaveAccountButton.snp.makeConstraints { (make) in
+            make.right.left.bottom.equalTo(view)
+            make.height.equalTo(50)
+        }
+    }
+    
+    
     // MARK: - Handle Methods
     
     func handleSignUp() {
@@ -119,38 +173,8 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    
-    // MARK: - View Lifecycles
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        setupViews()        
-        setupInputFields()
-    }
-    
-    fileprivate func setupViews() {
-        view.addSubview(plusPhotoButton)
-        plusPhotoButton.snp.makeConstraints { (make) in
-            make.height.width.equalTo(140)
-            make.centerX.equalTo(view)
-            make.top.equalTo(view).offset(40)
-        }
-    }
-    
-    fileprivate func setupInputFields() {
-        
-        let stackView = UIStackView(arrangedSubviews: [emailTextField,usernameTextField,passwordTextField, signupButton])
-        stackView.distribution = .fillEqually
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        view.addSubview(stackView)
-        stackView.snp.makeConstraints { (make) in
-            make.top.equalTo(plusPhotoButton.snp.bottom).offset(20)
-            make.left.equalTo(view).offset(40)
-            make.right.equalTo(view).offset(-40)
-            make.height.equalTo(200)
-        }
+    func handleShowLogin() {
+        _ = navigationController?.popViewController(animated: true)
     }
     
     // MARK: - ImagePickerController Methods
