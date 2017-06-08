@@ -14,7 +14,7 @@ class MainTabBarController: UITabBarController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        delegate = self
         if FIRAuth.auth()?.currentUser == nil {
             DispatchQueue.main.async {
                 let loginController = LoginController()
@@ -63,5 +63,19 @@ class MainTabBarController: UITabBarController {
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
+    }
+}
+
+extension MainTabBarController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let index = viewControllers?.index(of: viewController)
+        if index == 2 {
+            let flowLayout = UICollectionViewFlowLayout()
+            let photoSelectorController = PhotoSelectorController(collectionViewLayout: flowLayout)
+            let photoSelectorNavController = UINavigationController(rootViewController: photoSelectorController)
+            present(photoSelectorNavController, animated: true, completion: nil)
+            return false
+        }
+        return true
     }
 }
