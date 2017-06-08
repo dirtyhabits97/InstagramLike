@@ -17,6 +17,11 @@ class UserProfileController: UICollectionViewController {
     private let cellId = "cellId"
     
     
+    // MARK: - Object Variables
+    
+    var user: User?
+    
+    
     // MARK - View Lifecycle
     
     override func viewDidLoad() {
@@ -24,8 +29,13 @@ class UserProfileController: UICollectionViewController {
         collectionView?.backgroundColor = .white
         fetchUser()
         registerViews()
+        setupLogOutButton()
     }
-    var user: User?
+    
+    fileprivate func setupLogOutButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogOut))
+    }
+    
     fileprivate func fetchUser() {
         guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
         FIRDatabase.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -41,6 +51,22 @@ class UserProfileController: UICollectionViewController {
     fileprivate func registerViews() {
         collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+    }
+    
+    
+    // MARK: Handle Methods
+    
+    func handleLogOut() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
+            do {
+                try FIRAuth.auth()?.signOut()
+            } catch let signOutError {
+                print("Failed to sign out: ", signOutError)
+            }
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
     
     
