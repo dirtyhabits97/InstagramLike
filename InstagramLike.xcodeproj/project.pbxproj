@@ -17,7 +17,9 @@
 		7C4AB6DC1EE6321B001C8834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C4AB6DA1EE6321B001C8834 /* LaunchScreen.storyboard */; };
 		7C4AB6E41EE633E8001C8834 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4AB6E31EE633E8001C8834 /* SnapKit.framework */; };
 		7C96066B1EE8909100A20BFF /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C96066A1EE8909100A20BFF /* MainTabBarController.swift */; };
-		7C96066D1EE8915D00A20BFF /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C96066C1EE8915D00A20BFF /* UserProfileController.swift */; };
+		7C96066F1EE8AA5400A20BFF /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C96066E1EE8AA5400A20BFF /* UserProfileController.swift */; };
+		7C9606721EE8B59600A20BFF /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9606711EE8B59600A20BFF /* UserProfileHeader.swift */; };
+		7C9606751EE8B89900A20BFF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9606741EE8B89900A20BFF /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +35,9 @@
 		7C4AB6DD1EE6321B001C8834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C4AB6E31EE633E8001C8834 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = "Pods/../build/Release-iphoneos/SnapKit/SnapKit.framework"; sourceTree = "<group>"; };
 		7C96066A1EE8909100A20BFF /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		7C96066C1EE8915D00A20BFF /* UserProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
+		7C96066E1EE8AA5400A20BFF /* UserProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
+		7C9606711EE8B59600A20BFF /* UserProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
+		7C9606741EE8B89900A20BFF /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B53A6986958CE0B647C83BB8 /* Pods_InstagramLike.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramLike.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC7BEE9663CC63A19DDA122E /* Pods-InstagramLike.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramLike.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramLike/Pods-InstagramLike.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -98,10 +102,11 @@
 		7C4AB6D01EE6321B001C8834 /* InstagramLike */ = {
 			isa = PBXGroup;
 			children = (
+				7C9606731EE8B89000A20BFF /* Models */,
+				7C9606701EE8B58100A20BFF /* User Profile */,
 				7C25346F1EE63FDE0082BD2D /* Helpers */,
 				7C4AB6D11EE6321B001C8834 /* AppDelegate.swift */,
 				7C96066A1EE8909100A20BFF /* MainTabBarController.swift */,
-				7C96066C1EE8915D00A20BFF /* UserProfileController.swift */,
 				7C4AB6D31EE6321B001C8834 /* ViewController.swift */,
 				7C4AB6D51EE6321B001C8834 /* Main.storyboard */,
 				7C4AB6D81EE6321B001C8834 /* Assets.xcassets */,
@@ -110,6 +115,23 @@
 				7C4AB6DD1EE6321B001C8834 /* Info.plist */,
 			);
 			path = InstagramLike;
+			sourceTree = "<group>";
+		};
+		7C9606701EE8B58100A20BFF /* User Profile */ = {
+			isa = PBXGroup;
+			children = (
+				7C96066E1EE8AA5400A20BFF /* UserProfileController.swift */,
+				7C9606711EE8B59600A20BFF /* UserProfileHeader.swift */,
+			);
+			name = "User Profile";
+			sourceTree = "<group>";
+		};
+		7C9606731EE8B89000A20BFF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7C9606741EE8B89900A20BFF /* User.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,8 +262,10 @@
 				7C4AB6D41EE6321B001C8834 /* ViewController.swift in Sources */,
 				7C25346E1EE63FC90082BD2D /* Helpers.swift in Sources */,
 				7C96066B1EE8909100A20BFF /* MainTabBarController.swift in Sources */,
-				7C96066D1EE8915D00A20BFF /* UserProfileController.swift in Sources */,
+				7C9606721EE8B59600A20BFF /* UserProfileHeader.swift in Sources */,
+				7C96066F1EE8AA5400A20BFF /* UserProfileController.swift in Sources */,
 				7C4AB6D21EE6321B001C8834 /* AppDelegate.swift in Sources */,
+				7C9606751EE8B89900A20BFF /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

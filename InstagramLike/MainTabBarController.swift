@@ -14,7 +14,7 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.tintColor = .black
-        let flowLayout = UICollectionViewLayout()
+        let flowLayout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: flowLayout)
         let navController = UINavigationController(rootViewController: userProfileController)
         navController.tabBarItem.image = #imageLiteral(resourceName: "profile_unselected")
