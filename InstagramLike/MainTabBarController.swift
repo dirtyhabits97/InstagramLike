@@ -23,6 +23,10 @@ class MainTabBarController: UITabBarController {
             }
             return
         }
+        setupViewControllers()
+    }
+    
+    func setupViewControllers() {
         tabBar.tintColor = .black
         let flowLayout = UICollectionViewFlowLayout()
         let userProfileController = UserProfileController(collectionViewLayout: flowLayout)

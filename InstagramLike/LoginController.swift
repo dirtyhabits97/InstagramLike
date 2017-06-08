@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 class LoginController: UIViewController {
     
@@ -33,7 +34,7 @@ class LoginController: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = .systemFont(ofSize: 14)
-//        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return tf
     }()
     
@@ -44,7 +45,7 @@ class LoginController: UIViewController {
         tf.backgroundColor = UIColor(white: 0, alpha: 0.03)
         tf.borderStyle = .roundedRect
         tf.font = .systemFont(ofSize: 14)
-//        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
+        tf.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         return tf
     }()
     
@@ -55,7 +56,7 @@ class LoginController: UIViewController {
         button.layer.cornerRadius = 5
         button.titleLabel?.font = .boldSystemFont(ofSize: 14)
         button.setTitleColor(.white, for: .normal)
-//        button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         button.isEnabled = false
         return button
     }()
@@ -126,5 +127,26 @@ class LoginController: UIViewController {
     func handleShowSignUp() {
         let signupController = SignUpController()
         navigationController?.pushViewController(signupController, animated: true)
+    }
+    
+    func handleTextInputChange() {
+        let isFormValid = !(emailTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
+        loginButton.backgroundColor = isFormValid ? UIColor(r: 17, g: 154, b: 237) : UIColor(r: 149, g: 204, b: 244)
+        loginButton.isEnabled = isFormValid ? true : false
+    }
+    
+    func handleLogin() {
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
+            if let err = error {
+                print("Failed to sign in with email: ", err)
+                return
+            }
+            print("Succesfully logged back in with user")
+            guard let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController else { return }
+            mainTabBarController.setupViewControllers()
+            self.dismiss(animated: true, completion: nil)
+        })
     }
 }
