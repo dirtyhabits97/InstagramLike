@@ -157,9 +157,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
                     mainTabBarController.setupViewControllers()
                     self.dismiss(animated: true, completion: nil)
                 })
-
             })
-            
         })
     }
     
