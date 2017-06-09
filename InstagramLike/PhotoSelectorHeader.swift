@@ -1,15 +1,15 @@
 //
-//  PhotoSelectorCell.swift
+//  PhotoSelectorHeader.swift
 //  InstagramLike
 //
-//  Created by Gonzalo Reyes Huertas on 6/8/17.
+//  Created by GERH on 6/9/17.
 //  Copyright © 2017 Gonzalo Reyes Huertas. All rights reserved.
 //
 
 import UIKit
 import SnapKit
 
-class PhotoSelectorCell: UICollectionViewCell {
+class PhotoSelectorHeader: UICollectionViewCell {
     
     let photoImageView: UIImageView = {
         let iv = UIImageView()
@@ -34,3 +34,4 @@ class PhotoSelectorCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }    
 }
+

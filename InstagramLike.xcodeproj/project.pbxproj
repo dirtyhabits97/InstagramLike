@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		33D162E2D43FA7A6923D5CD6 /* Pods_InstagramLike.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B53A6986958CE0B647C83BB8 /* Pods_InstagramLike.framework */; };
+		4123CCE71EEAF92D0006C5E5 /* PhotoSelectorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4123CCE61EEAF92D0006C5E5 /* PhotoSelectorHeader.swift */; };
 		7C25346C1EE63E780082BD2D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C25346B1EE63E780082BD2D /* GoogleService-Info.plist */; };
 		7C25346E1EE63FC90082BD2D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25346D1EE63FC90082BD2D /* Helpers.swift */; };
 		7C4AB6D21EE6321B001C8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4AB6D11EE6321B001C8834 /* AppDelegate.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4123CCE61EEAF92D0006C5E5 /* PhotoSelectorHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorHeader.swift; sourceTree = "<group>"; };
 		646F12389BF88E114A904E3E /* Pods-InstagramLike.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramLike.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramLike/Pods-InstagramLike.debug.xcconfig"; sourceTree = "<group>"; };
 		7C25346B1EE63E780082BD2D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C25346D1EE63FC90082BD2D /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Helpers/Helpers.swift; sourceTree = SOURCE_ROOT; };
@@ -129,6 +131,7 @@
 			children = (
 				7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */,
 				7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */,
+				4123CCE61EEAF92D0006C5E5 /* PhotoSelectorHeader.swift */,
 			);
 			name = "Add Photo";
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				7C838C061EE9E2C5007168A2 /* PhotoSelectorController.swift in Sources */,
 				7C9606721EE8B59600A20BFF /* UserProfileHeader.swift in Sources */,
 				7C96066F1EE8AA5400A20BFF /* UserProfileController.swift in Sources */,
+				4123CCE71EEAF92D0006C5E5 /* PhotoSelectorHeader.swift in Sources */,
 				7C9606781EE8E7E300A20BFF /* LoginController.swift in Sources */,
 				7C4AB6D21EE6321B001C8834 /* AppDelegate.swift in Sources */,
 				7C9606751EE8B89900A20BFF /* User.swift in Sources */,
