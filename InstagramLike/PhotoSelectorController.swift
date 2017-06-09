@@ -20,6 +20,7 @@ class PhotoSelectorController: UICollectionViewController {
     var assets = [PHAsset]()
     var images = [UIImage]()
     var selectedImage: UIImage?
+//    var header: PhotoSelectorHeader?
     
     // MARK: - View Lifecycle
     
@@ -48,16 +49,26 @@ class PhotoSelectorController: UICollectionViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
     }
     
+    
+    // MARK: - Handle Methods
+    
     func handleCancel() {
         dismiss(animated: true, completion: nil)
     }
     
     func handleNext() {
-        
+        let sharePhotoController = SharePhotoController()
+        sharePhotoController.selectedImage = selectedImage
+//        sharePhotoController.selectedImage = header.photoImageView.image
+        navigationController?.pushViewController(sharePhotoController, animated: true)
     }
+    
+    
+    // MARK: - Photos Methods
+    
     fileprivate func assetsFetchOptions() -> PHFetchOptions {
         let fetchOptions = PHFetchOptions()
-        fetchOptions.fetchLimit = 10
+        fetchOptions.fetchLimit = 30
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchOptions.sortDescriptors = [sortDescriptor]
         return fetchOptions
@@ -96,6 +107,10 @@ class PhotoSelectorController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedImage = images[indexPath.item]
         self.collectionView?.reloadData()
+        
+        // Scroll back to the top upon selection
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
@@ -118,6 +133,7 @@ class PhotoSelectorController: UICollectionViewController {
                 })
             }
         }
+//        self.header = header
         return header
     }
 }
