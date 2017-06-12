@@ -20,6 +20,7 @@ class UserProfileController: UICollectionViewController {
     // MARK: - Object Variables
     
     var user: User?
+    var posts = [Post]()
     
     
     // MARK - View Lifecycle
@@ -30,11 +31,22 @@ class UserProfileController: UICollectionViewController {
         fetchUser()
         registerViews()
         setupLogOutButton()
+        fetchPosts()
     }
+    
+    
+    // MARK: - Setup Methods
     
     fileprivate func setupLogOutButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "gear").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLogOut))
     }
+    fileprivate func registerViews() {
+        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
+    }
+    
+    
+    // MARK: - Fetch Methods
     
     fileprivate func fetchUser() {
         guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
@@ -44,14 +56,25 @@ class UserProfileController: UICollectionViewController {
             self.navigationItem.title = self.user?.username
             self.collectionView?.reloadData()
         }) { (err) in
-            print("Failed to fetch user:", err)
+            print("Failed to fetch user: ", err)
+        }
+    }
+    fileprivate func fetchPosts() {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        FIRDatabase.database().reference().child("posts").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionaries = snapshot.value as? [String: Any] else { return }
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String:Any] else { return }
+                let post = Post(dictionary: dictionary)
+                self.posts.append(post)
+            })
+            self.collectionView?.reloadData()
+        }) { (err) in
+            print("Failed to fetch posts: ", err)
         }
     }
     
-    fileprivate func registerViews() {
-        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
-    }
+    
     
     
     // MARK: Handle Methods
@@ -82,12 +105,12 @@ class UserProfileController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return posts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
-        cell.backgroundColor = .purple
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
+        cell.post = posts[indexPath.item]
         return cell
     }
 }
