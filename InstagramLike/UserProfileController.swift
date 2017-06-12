@@ -31,7 +31,7 @@ class UserProfileController: UICollectionViewController {
         fetchUser()
         registerViews()
         setupLogOutButton()
-        fetchPosts()
+        fetchOrderedPosts()
     }
     
     
@@ -59,25 +59,24 @@ class UserProfileController: UICollectionViewController {
             print("Failed to fetch user: ", err)
         }
     }
-    fileprivate func fetchPosts() {
+    fileprivate func fetchOrderedPosts() {
         guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
-        FIRDatabase.database().reference().child("posts").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let dictionaries = snapshot.value as? [String: Any] else { return }
-            dictionaries.forEach({ (key, value) in
-                guard let dictionary = value as? [String:Any] else { return }
-                let post = Post(dictionary: dictionary)
-                self.posts.append(post)
-            })
+        let ref = FIRDatabase.database().reference().child("posts").child(uid)
+        //queryOrdered(byChild: "creationDate") ordena los posts(child) por fecha(creationDate)
+        ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String:Any] else { return }
+            let post = Post(dictionary: dictionary)
+            self.posts.append(post)
             self.collectionView?.reloadData()
         }) { (err) in
-            print("Failed to fetch posts: ", err)
+            print("Failed to fetch ordered posts: ", err)
         }
     }
     
     
     
     
-    // MARK: Handle Methods
+    // MARK: - Handle Methods
     
     func handleLogOut() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
