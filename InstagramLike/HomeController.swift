@@ -72,6 +72,11 @@ class HomeController: UICollectionViewController {
 
 extension HomeController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 200)
+        var height: CGFloat = 40 + 8 //usernameLabel and userProfileImageView and offset from top
+        height += 8 // offset between top and post photo
+        height += view.frame.width //square picture for the post
+        height += 50
+        height += 80 // extra height for the caption
+        return CGSize(width: view.frame.width, height: height)
     }
 }
