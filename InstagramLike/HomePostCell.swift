@@ -14,8 +14,12 @@ class HomePostCell: UICollectionViewCell {
     // MARK: - Object Variables
     var post: Post? {
         didSet {
+            usernameLabel.text = post?.user.username
             guard let postImageUrl = post?.imageUrl else { return }
             photoImageView.loadImage(with: postImageUrl)
+            guard let profileImageUrl = post?.user.profileImageUrl else { return }
+            userProfileImageView.loadImage(with: profileImageUrl)
+            setupAttributedCaption()
         }
     }
     
@@ -32,7 +36,6 @@ class HomePostCell: UICollectionViewCell {
     
     let usernameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Username"
         label.font = .boldSystemFont(ofSize: 14)
         return label
     }()
@@ -77,13 +80,6 @@ class HomePostCell: UICollectionViewCell {
     
     let captionLabel: UILabel = {
         let label = UILabel()
-        
-        let attributedText = NSMutableAttributedString(string: "Username: ", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "Some caption text that will perhaps wrap onto the next line", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)]))
-        attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 4)]))
-        attributedText.append(NSAttributedString(string: "1 week ago", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName:UIColor.gray]))
-        
-        label.attributedText = attributedText
         label.numberOfLines = 0
         return label
     }()
@@ -157,6 +153,17 @@ class HomePostCell: UICollectionViewCell {
             make.bottom.equalTo(self)
         }
         
+    }
+    fileprivate func setupAttributedCaption() {
+        guard let username = post?.user.username else { return }
+        guard let caption = post?.caption else { return }
+        
+        let attributedText = NSMutableAttributedString(string: "\(username): ", attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 14)])
+        attributedText.append(NSAttributedString(string: caption, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)]))
+        attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 4)]))
+        attributedText.append(NSAttributedString(string: "1 week ago", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName:UIColor.gray]))
+        
+        captionLabel.attributedText = attributedText
     }
     
 }

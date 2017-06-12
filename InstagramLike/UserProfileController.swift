@@ -65,8 +65,9 @@ class UserProfileController: UICollectionViewController {
         //queryOrdered(byChild: "creationDate") ordena los posts(child) por fecha(creationDate)
         ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String:Any] else { return }
-            let post = Post(dictionary: dictionary)
-            self.posts.append(post)
+            guard let user = self.user else { return }
+            let post = Post(user: user, dictionary: dictionary)
+            self.posts.insert(post, at: 0)
             self.collectionView?.reloadData()
         }) { (err) in
             print("Failed to fetch ordered posts: ", err)
