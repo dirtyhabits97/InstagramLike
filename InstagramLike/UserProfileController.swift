@@ -74,8 +74,6 @@ class UserProfileController: UICollectionViewController {
     }
     
     
-    
-    
     // MARK: - Handle Methods
     
     func handleLogOut() {
