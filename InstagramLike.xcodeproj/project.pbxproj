@@ -153,7 +153,6 @@
 				7C9606761EE8E7CD00A20BFF /* Login */,
 				7C9606731EE8B89000A20BFF /* Models */,
 				7C9606701EE8B58100A20BFF /* User Profile */,
-				7C25346F1EE63FDE0082BD2D /* Helpers */,
 				7C96066A1EE8909100A20BFF /* MainTabBarController.swift */,
 				7C4AB6D11EE6321B001C8834 /* AppDelegate.swift */,
 				7C4AB6D51EE6321B001C8834 /* Main.storyboard */,
@@ -207,6 +206,7 @@
 		7CC860EF1EEEFB88001F9B06 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				7C25346F1EE63FDE0082BD2D /* Helpers */,
 				7CC860F01EEEFB9E001F9B06 /* CustomImageView.swift */,
 				7C1F7A381EEF61A900E74A6B /* FirebaseUtils.swift */,
 			);

@@ -28,7 +28,6 @@ class HomePostCell: UICollectionViewCell {
     let userProfileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
-        iv.backgroundColor = .cyan
         iv.layer.masksToBounds = true
         iv.layer.cornerRadius = 20
         return iv

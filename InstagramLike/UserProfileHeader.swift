@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 class UserProfileHeader: UICollectionViewCell {
     
@@ -18,6 +19,7 @@ class UserProfileHeader: UICollectionViewCell {
             guard let profileImageUrl = user?.profileImageUrl else { return }
             profileImageView.loadImage(with: profileImageUrl)
             usernameLabel.text = user?.username
+            setupEditFollowButton()
         }
     }
     
@@ -94,7 +96,7 @@ class UserProfileHeader: UICollectionViewCell {
         return label
     }()
     
-    let editProfileButton: UIButton = {
+    lazy var editProfileFollowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -102,6 +104,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.layer.borderColor = UIColor.lightGray.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 3
+        button.addTarget(self, action: #selector(handleEditProfileOrFollow), for: .touchUpInside)
         return button
     }()
     
@@ -115,6 +118,9 @@ class UserProfileHeader: UICollectionViewCell {
         setupUserStatsViews()
         setupEditProfileButton()
     }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     // MARK: - Setup Methods
@@ -126,7 +132,6 @@ class UserProfileHeader: UICollectionViewCell {
             make.height.width.equalTo(80)
         }
     }
-    
     fileprivate func setupUsernameLabel() {
         addSubview(usernameLabel)
         usernameLabel.snp.makeConstraints { (make) in
@@ -136,7 +141,6 @@ class UserProfileHeader: UICollectionViewCell {
             make.bottom.equalTo(gridButton.snp.top)
         }
     }
-    
     fileprivate func setupBottomToolBar() {
         let topDividerView = UIView()
         topDividerView.backgroundColor = .lightGray
@@ -166,7 +170,6 @@ class UserProfileHeader: UICollectionViewCell {
             make.height.equalTo(0.5)
         }
     }
-    
     fileprivate func setupUserStatsViews() {
         let stackview = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
         stackview.distribution = .fillEqually
@@ -178,18 +181,74 @@ class UserProfileHeader: UICollectionViewCell {
             make.height.equalTo(50)
         }
     }
-    
     fileprivate func setupEditProfileButton() {
-        addSubview(editProfileButton)
-        editProfileButton.snp.makeConstraints { (make) in
+        addSubview(editProfileFollowButton)
+        editProfileFollowButton.snp.makeConstraints { (make) in
             make.top.equalTo(postsLabel.snp.bottom).offset(2)
             make.left.equalTo(postsLabel)
             make.right.equalTo(followingLabel)
             make.height.equalTo(34)
         }
     }
+    fileprivate func setupEditFollowButton() {
+        guard let currentLoggedUserId = FIRAuth.auth()?.currentUser?.uid else { return }
+        guard let userId = user?.uid else { return }
+        if currentLoggedUserId == userId {
+            //TODO
+        } else {
+            let ref = FIRDatabase.database().reference().child("following").child(currentLoggedUserId).child(userId)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let isFollowing = snapshot.value as? Int, isFollowing == 1 {
+                    self.editProfileFollowButton.setTitle("Unfollow", for: .normal)
+                } else {
+                    self.setFollowStyle()
+                }
+                
+            }, withCancel: { (error) in
+                print("Failed to fetch following users: ", error)
+            })
+        }
+    }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    fileprivate func setFollowStyle() {
+        self.editProfileFollowButton.setTitle("Follow", for: .normal)
+        self.editProfileFollowButton.backgroundColor = UIColor(r: 17, g: 154, b: 237)
+        self.editProfileFollowButton.setTitleColor(.white, for: .normal)
+        self.editProfileFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+    }
+    fileprivate func setUnfollowStyle() {
+        self.editProfileFollowButton.setTitle("Unfollow", for: .normal)
+        self.editProfileFollowButton.backgroundColor = .white
+        self.editProfileFollowButton.setTitleColor(.black, for: .normal)
+    }
+    
+    
+    // MARK: - Handle Methods
+    
+    func handleEditProfileOrFollow() {
+        guard let currentLoggedInUserId = FIRAuth.auth()?.currentUser?.uid else { return }
+        guard let userId = user?.uid else { return }
+        if editProfileFollowButton.titleLabel?.text == "Unfollow" {
+            let reference = FIRDatabase.database().reference().child("following").child(currentLoggedInUserId).child(userId)
+            reference.removeValue(completionBlock: { (error, ref) in
+                if let err = error {
+                    print("Failed to unfollow user", err)
+                    return
+                }
+                print("Succesfully unfollowed user: ", self.user?.username ?? "")
+                self.setFollowStyle()
+            })
+        } else if editProfileFollowButton.titleLabel?.text == "Follow" {
+            let reference = FIRDatabase.database().reference().child("following").child(currentLoggedInUserId)
+            let values = [userId : 1]
+            reference.updateChildValues(values) { (error, ref) in
+                if let err = error {
+                    print("Failed to follow user: ", err)
+                    return
+                }
+                print("Succesfully followed user: ", self.user?.username ?? "")
+                self.setUnfollowStyle()
+            }
+        }
     }
 }
