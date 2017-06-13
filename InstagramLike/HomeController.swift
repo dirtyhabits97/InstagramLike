@@ -40,30 +40,25 @@ class HomeController: UICollectionViewController {
     
     fileprivate func fetchPosts() {
         guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
-        FIRDatabase.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let dictionary = snapshot.value as? [String:Any] else { return }
-            let user = User(dictionary: dictionary)
-            
-            
-            let ref = FIRDatabase.database().reference().child("posts").child(uid)
-            ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                guard let dictionaries = snapshot.value as? [String:Any] else { return }
-                dictionaries.forEach({ (key, value) in
-                    guard let dictionary = value as? [String:Any] else { return }
-                    
-                    let post = Post(user: user, dictionary: dictionary)
-                    self.posts.append(post)
-                })
-                self.collectionView?.reloadData()
-            }) { (err) in
-                print("Failed to fetch posts: ", err)
-            }
-            
-            
-        }, withCancel: { (err) in
-            print("Failed to fetch user: ", err)
-        })
-        
+        FIRDatabase.fetchUser(withUID: uid) { (user) in
+            self.fetchPosts(fromUser: user)
+        }
+    }
+    
+    fileprivate func fetchPosts(fromUser user: User) {
+        let ref = FIRDatabase.database().reference().child("posts").child(user.uid)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionaries = snapshot.value as? [String:Any] else { return }
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String:Any] else { return }
+                
+                let post = Post(user: user, dictionary: dictionary)
+                self.posts.append(post)
+            })
+            self.collectionView?.reloadData()
+        }) { (err) in
+            print("Failed to fetch posts: ", err)
+        }
     }
     
     // MARK: - CollectionView Methods
