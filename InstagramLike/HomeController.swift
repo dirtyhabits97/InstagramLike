@@ -24,6 +24,7 @@ class HomeController: UICollectionViewController {
         setupNavigationItems()
         registerCells()
         fetchPosts()
+        fetchFollowingUserIds()
     }
     
     
@@ -44,20 +45,37 @@ class HomeController: UICollectionViewController {
             self.fetchPosts(fromUser: user)
         }
     }
-    
     fileprivate func fetchPosts(fromUser user: User) {
         let ref = FIRDatabase.database().reference().child("posts").child(user.uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let dictionaries = snapshot.value as? [String:Any] else { return }
             dictionaries.forEach({ (key, value) in
                 guard let dictionary = value as? [String:Any] else { return }
-                
                 let post = Post(user: user, dictionary: dictionary)
                 self.posts.append(post)
+            })
+            self.posts.sort(by: { (p1, p2) -> Bool in
+                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
             })
             self.collectionView?.reloadData()
         }) { (err) in
             print("Failed to fetch posts: ", err)
+        }
+    }
+    fileprivate func fetchFollowingUserIds() {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        let ref = FIRDatabase.database().reference().child("following").child(uid)
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let userIdsDictionary = snapshot.value as? [String:Any] else { return }
+            userIdsDictionary.forEach({ (key, value) in
+                
+                FIRDatabase.fetchUser(withUID: key, completion: { (user) in
+                    self.fetchPosts(fromUser: user)
+                })
+                
+            })
+        }) { (error) in
+            print("Failed to fetch followed users: ", error)
         }
     }
     
@@ -71,7 +89,6 @@ class HomeController: UICollectionViewController {
         cell.post = posts[indexPath.item]
         return cell
     }
-    
 }
 
 
