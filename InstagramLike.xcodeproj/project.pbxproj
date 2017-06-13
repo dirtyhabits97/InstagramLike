@@ -12,6 +12,8 @@
 		7C1F7A351EEF0C3B00E74A6B /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1F7A341EEF0C3B00E74A6B /* HomeController.swift */; };
 		7C1F7A371EEF0EC700E74A6B /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1F7A361EEF0EC700E74A6B /* HomePostCell.swift */; };
 		7C1F7A391EEF61A900E74A6B /* FirebaseUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1F7A381EEF61A900E74A6B /* FirebaseUtils.swift */; };
+		7C1F7A3C1EEF651600E74A6B /* UserSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1F7A3B1EEF651600E74A6B /* UserSearchController.swift */; };
+		7C1F7A3E1EEF6B8900E74A6B /* UserSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1F7A3D1EEF6B8900E74A6B /* UserSearchCell.swift */; };
 		7C25346C1EE63E780082BD2D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7C25346B1EE63E780082BD2D /* GoogleService-Info.plist */; };
 		7C25346E1EE63FC90082BD2D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25346D1EE63FC90082BD2D /* Helpers.swift */; };
 		7C4AB6D21EE6321B001C8834 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4AB6D11EE6321B001C8834 /* AppDelegate.swift */; };
@@ -39,6 +41,8 @@
 		7C1F7A341EEF0C3B00E74A6B /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		7C1F7A361EEF0EC700E74A6B /* HomePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePostCell.swift; sourceTree = "<group>"; };
 		7C1F7A381EEF61A900E74A6B /* FirebaseUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseUtils.swift; sourceTree = "<group>"; };
+		7C1F7A3B1EEF651600E74A6B /* UserSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchController.swift; sourceTree = "<group>"; };
+		7C1F7A3D1EEF6B8900E74A6B /* UserSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchCell.swift; sourceTree = "<group>"; };
 		7C25346B1EE63E780082BD2D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7C25346D1EE63FC90082BD2D /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Helpers.swift; path = Helpers/Helpers.swift; sourceTree = SOURCE_ROOT; };
 		7C4AB6CE1EE6321B001C8834 /* InstagramLike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramLike.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +108,15 @@
 			name = Home;
 			sourceTree = "<group>";
 		};
+		7C1F7A3A1EEF650500E74A6B /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				7C1F7A3B1EEF651600E74A6B /* UserSearchController.swift */,
+				7C1F7A3D1EEF6B8900E74A6B /* UserSearchCell.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
 		7C25346F1EE63FDE0082BD2D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +146,7 @@
 		7C4AB6D01EE6321B001C8834 /* InstagramLike */ = {
 			isa = PBXGroup;
 			children = (
+				7C1F7A3A1EEF650500E74A6B /* Search */,
 				7C1F7A331EEF093B00E74A6B /* Home */,
 				7CC860EF1EEEFB88001F9B06 /* Util */,
 				7C838C041EE9E2A1007168A2 /* Add Photo */,
@@ -324,12 +338,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C1F7A3E1EEF6B8900E74A6B /* UserSearchCell.swift in Sources */,
 				7C4AB6D41EE6321B001C8834 /* SignUpController.swift in Sources */,
 				7C1F7A371EEF0EC700E74A6B /* HomePostCell.swift in Sources */,
 				7C25346E1EE63FC90082BD2D /* Helpers.swift in Sources */,
 				7C96066B1EE8909100A20BFF /* MainTabBarController.swift in Sources */,
 				7C838C061EE9E2C5007168A2 /* PhotoSelectorController.swift in Sources */,
 				7CC860F11EEEFB9E001F9B06 /* CustomImageView.swift in Sources */,
+				7C1F7A3C1EEF651600E74A6B /* UserSearchController.swift in Sources */,
 				7C9606721EE8B59600A20BFF /* UserProfileHeader.swift in Sources */,
 				7CC860EC1EEEEF49001F9B06 /* Post.swift in Sources */,
 				7C96066F1EE8AA5400A20BFF /* UserProfileController.swift in Sources */,
