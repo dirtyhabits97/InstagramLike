@@ -11,6 +11,21 @@ import SnapKit
 
 class UserSearchCell: UICollectionViewCell {
     
+    // MARK: - Object Variables
+    var user: User? {
+        didSet {
+            guard let url = user?.profileImageUrl else { return }
+            profileImageView.loadImage(with: url)
+            guard let username = user?.username else { return }
+            
+            let attributedText = NSMutableAttributedString(string: username, attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)])
+            attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 4)]))
+            attributedText.append(NSAttributedString(string: "10 posts", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName:UIColor.gray]))
+            
+            usernameLabel.attributedText = attributedText
+        }
+    }
+    
     // MARK: - Interface Objects
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -22,12 +37,6 @@ class UserSearchCell: UICollectionViewCell {
     
     let usernameLabel: UILabel = {
         let label = UILabel()
-        
-        let attributedText = NSMutableAttributedString(string: "Swag boi", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14)])
-        attributedText.append(NSAttributedString(string: "\n\n", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 4)]))
-        attributedText.append(NSAttributedString(string: "10 posts", attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName:UIColor.gray]))
-        
-        label.attributedText = attributedText
         label.numberOfLines = 0
         return label
     }()

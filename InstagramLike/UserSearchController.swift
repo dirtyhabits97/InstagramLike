@@ -8,16 +8,23 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 class UserSearchController: UICollectionViewController {
+    
     
     // MARK: - Object Ids
     private let cellId = "cellId"
     
+    // MARK: - Object Variables
+    var users = [User]()
+    var filteredUsers = [User]()
+    
     // MARK: - Interface Objects
-    let searchBar: UISearchBar = {
+    lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.placeholder = "Enter username"
+        sb.delegate = self
         // set the backgorund color for the text field
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(r: 230, g: 230, b: 230)
         return sb
@@ -32,6 +39,7 @@ class UserSearchController: UICollectionViewController {
         collectionView?.alwaysBounceVertical = true
         setupNavSearchBar()
         registerCells()
+        fetchUsers()
     }
     
     
@@ -51,13 +59,38 @@ class UserSearchController: UICollectionViewController {
     }
     
     
+    // MARK: - Fetch Methods
+    
+    fileprivate func fetchUsers() {
+        let ref = FIRDatabase.database().reference().child("users")
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dictionaries = snapshot.value as? [String:Any] else { return }
+            dictionaries.forEach({ (key, value) in
+                guard let dictionary = value as? [String:Any] else { return }
+                let user = User(uid: key, dictionary: dictionary)
+                self.users.append(user)
+            })
+//            self.users.sort{ $0.username.compare($1.username) == .orderedAscending }
+            self.users.sort(by: { (u1, u2) -> Bool in
+                return u1.username.compare(u2.username) == .orderedAscending
+            })
+            self.filteredUsers = self.users
+            self.collectionView?.reloadData()
+        }) { (err) in
+            print("Failed to fetch users for search")
+        }
+    }
+    
+    
     // MARK: -  CollectionView Methods
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return filteredUsers.count
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserSearchCell
+        cell.user = filteredUsers[indexPath.item]
+        
         return cell
     }
 }
@@ -68,5 +101,21 @@ class UserSearchController: UICollectionViewController {
 extension UserSearchController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 60)
+    }
+}
+
+
+// MARK: - SearchBarDelegate Methods
+
+extension UserSearchController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            filteredUsers = users
+        } else {
+            filteredUsers = self.users.filter { (user) -> Bool in
+                return user.username.lowercased().contains(searchText.lowercased())
+            }
+        }
+        self.collectionView?.reloadData()
     }
 }
