@@ -15,6 +15,7 @@ class UserProfileController: UICollectionViewController {
     
     private let headerId = "headerId"
     private let cellId = "cellId"
+    var userId: String?
     
     
     // MARK: - Object Variables
@@ -31,7 +32,6 @@ class UserProfileController: UICollectionViewController {
         fetchUser()
         registerViews()
         setupLogOutButton()
-        fetchOrderedPosts()
     }
     
     
@@ -49,15 +49,18 @@ class UserProfileController: UICollectionViewController {
     // MARK: - Fetch Methods
     
     fileprivate func fetchUser() {
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        // set different user for the profile
+        let uid = userId ?? FIRAuth.auth()?.currentUser?.uid ?? ""
         FIRDatabase.fetchUser(withUID: uid) { (user) in
             self.user = user
             self.navigationItem.title = self.user?.username
             self.collectionView?.reloadData()
+            //fetch posts after the user is fetch, otherwise user and posts dont match
+            self.fetchOrderedPosts()
         }
     }
     fileprivate func fetchOrderedPosts() {
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        guard let uid = user?.uid else { return }
         let ref = FIRDatabase.database().reference().child("posts").child(uid)
         //queryOrdered(byChild: "creationDate") ordena los posts(child) por fecha(creationDate)
         ref.queryOrdered(byChild: "creationDate").observe(.childAdded, with: { (snapshot) in
@@ -98,11 +101,9 @@ class UserProfileController: UICollectionViewController {
         header.user = self.user
         return header
     }
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
-    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! UserProfilePhotoCell
         cell.post = posts[indexPath.item]

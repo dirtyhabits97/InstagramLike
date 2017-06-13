@@ -32,11 +32,16 @@ class UserSearchController: UICollectionViewController {
     
     
     // MARK: - View Lifecycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchBar.isHidden = false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = .white
         collectionView?.alwaysBounceVertical = true
+        collectionView?.keyboardDismissMode = .onDrag
         setupNavSearchBar()
         registerCells()
         fetchUsers()
@@ -66,6 +71,10 @@ class UserSearchController: UICollectionViewController {
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let dictionaries = snapshot.value as? [String:Any] else { return }
             dictionaries.forEach({ (key, value) in
+                if key == FIRAuth.auth()?.currentUser?.uid {
+                    print("Found myself")
+                    return
+                }
                 guard let dictionary = value as? [String:Any] else { return }
                 let user = User(uid: key, dictionary: dictionary)
                 self.users.append(user)
@@ -92,6 +101,14 @@ class UserSearchController: UICollectionViewController {
         cell.user = filteredUsers[indexPath.item]
         
         return cell
+    }
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        searchBar.isHidden = true
+        searchBar.resignFirstResponder()
+        let user = filteredUsers[indexPath.item]
+        let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileController.userId = user.uid
+        navigationController?.pushViewController(userProfileController, animated: true)
     }
 }
 
