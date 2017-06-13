@@ -16,26 +16,46 @@ class HomeController: UICollectionViewController {
     
     // MARK: - Object Variables
     var posts = [Post]()
+    let refreshControl = UIRefreshControl()
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupObserver()
         collectionView?.backgroundColor = .white
+        setupRefreshController()
         setupNavigationItems()
         registerCells()
-        fetchPosts()
-        fetchFollowingUserIds()
+        fetchAllPosts()
     }
     
     
     // MARK: - Setup Methods
+    fileprivate func setupObserver() {
+        let name = SharePhotoController.updateFeedNotificationName
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: name, object: nil)
+    }
     fileprivate func setupNavigationItems() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
     }
     fileprivate func registerCells() {
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
     }
+    fileprivate func setupRefreshController() {
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView?.refreshControl = refreshControl
+    }
     
+    
+    // MARK: - Handle Methods
+    
+    func handleRefresh() {
+        posts.removeAll()
+        fetchAllPosts()
+    }
+    func handleUpdateFeed() {
+        handleRefresh()
+    }
     
     // MARK: - Fetch Methods
     
@@ -48,6 +68,7 @@ class HomeController: UICollectionViewController {
     fileprivate func fetchPosts(fromUser user: User) {
         let ref = FIRDatabase.database().reference().child("posts").child(user.uid)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            self.collectionView?.refreshControl?.endRefreshing()
             guard let dictionaries = snapshot.value as? [String:Any] else { return }
             dictionaries.forEach({ (key, value) in
                 guard let dictionary = value as? [String:Any] else { return }
@@ -78,6 +99,10 @@ class HomeController: UICollectionViewController {
             print("Failed to fetch followed users: ", error)
         }
     }
+    fileprivate func fetchAllPosts() {
+        fetchPosts()
+        fetchFollowingUserIds()
+    }
     
     // MARK: - CollectionView Methods
     
@@ -86,7 +111,9 @@ class HomeController: UICollectionViewController {
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomePostCell
-        cell.post = posts[indexPath.item]
+        if !self.refreshControl.isRefreshing {
+            cell.post = posts[indexPath.item]
+        }
         return cell
     }
 }
