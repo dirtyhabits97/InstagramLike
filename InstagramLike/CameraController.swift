@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import SnapKit
 
-class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
+class CameraController: UIViewController{
     
     // MARK: - ViewController Properties    
     override var prefersStatusBarHidden: Bool {
@@ -19,6 +19,8 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
     
     // MARK: - Object References
     let output = AVCapturePhotoOutput()
+    let leftToRightAnimationTransition = LeftToRightAnimationTransition()
+    let rightToLeftAnimationTransition = RightToLeftAnimationTransition()
     
     // MARK: - Interface Objects
     
@@ -39,6 +41,7 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        transitioningDelegate = self
         setupCaptureSession()
         setupCapturePhotoButton()
         setupDismissButton()
@@ -99,8 +102,12 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
     func handleDismiss() {
         dismiss(animated: true)
     }
-    
-    // MARK: - CapturePhotoDelegate Methods
+}
+
+
+// MARK: - CapturePhotoDelegate Methods
+
+extension CameraController: AVCapturePhotoCaptureDelegate {
     func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
         guard let buffer = photoSampleBuffer else { return }
         guard let imageData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer) else { return }
@@ -112,5 +119,18 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
         containerView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
+    }
+}
+
+
+// MARK: - TransitioningDelegate Methods
+extension CameraController: UIViewControllerTransitioningDelegate {
+    
+    // to make our own animation when presenting a viewcontroller
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return leftToRightAnimationTransition
+    }
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return rightToLeftAnimationTransition
     }
 }

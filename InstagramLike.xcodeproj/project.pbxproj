@@ -24,6 +24,8 @@
 		7C4AB6E41EE633E8001C8834 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4AB6E31EE633E8001C8834 /* SnapKit.framework */; };
 		7C6732CE1EF1C5D600645DC4 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732CD1EF1C5D600645DC4 /* CameraController.swift */; };
 		7C6732D01EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732CF1EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift */; };
+		7C6732D21EF1F33300645DC4 /* LeftToRightAnimationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732D11EF1F33300645DC4 /* LeftToRightAnimationTransition.swift */; };
+		7C6732D41EF1FB4200645DC4 /* RightToLeftAnimationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732D31EF1FB4200645DC4 /* RightToLeftAnimationTransition.swift */; };
 		7C838C061EE9E2C5007168A2 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */; };
 		7C838C081EE9F0B1007168A2 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */; };
 		7C8473531EEB4B03004122FF /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8473521EEB4B03004122FF /* SharePhotoController.swift */; };
@@ -57,6 +59,8 @@
 		7C4AB6E31EE633E8001C8834 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = "Pods/../build/Release-iphoneos/SnapKit/SnapKit.framework"; sourceTree = "<group>"; };
 		7C6732CD1EF1C5D600645DC4 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		7C6732CF1EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
+		7C6732D11EF1F33300645DC4 /* LeftToRightAnimationTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftToRightAnimationTransition.swift; sourceTree = "<group>"; };
+		7C6732D31EF1FB4200645DC4 /* RightToLeftAnimationTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightToLeftAnimationTransition.swift; sourceTree = "<group>"; };
 		7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		7C8473521EEB4B03004122FF /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
@@ -174,6 +178,8 @@
 			children = (
 				7C6732CD1EF1C5D600645DC4 /* CameraController.swift */,
 				7C6732CF1EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift */,
+				7C6732D11EF1F33300645DC4 /* LeftToRightAnimationTransition.swift */,
+				7C6732D31EF1FB4200645DC4 /* RightToLeftAnimationTransition.swift */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -358,9 +364,11 @@
 				7C25346E1EE63FC90082BD2D /* Helpers.swift in Sources */,
 				7C96066B1EE8909100A20BFF /* MainTabBarController.swift in Sources */,
 				7C838C061EE9E2C5007168A2 /* PhotoSelectorController.swift in Sources */,
+				7C6732D41EF1FB4200645DC4 /* RightToLeftAnimationTransition.swift in Sources */,
 				7CC860F11EEEFB9E001F9B06 /* CustomImageView.swift in Sources */,
 				7C1F7A3C1EEF651600E74A6B /* UserSearchController.swift in Sources */,
 				7C9606721EE8B59600A20BFF /* UserProfileHeader.swift in Sources */,
+				7C6732D21EF1F33300645DC4 /* LeftToRightAnimationTransition.swift in Sources */,
 				7C6732CE1EF1C5D600645DC4 /* CameraController.swift in Sources */,
 				7CC860EC1EEEEF49001F9B06 /* Post.swift in Sources */,
 				7C96066F1EE8AA5400A20BFF /* UserProfileController.swift in Sources */,

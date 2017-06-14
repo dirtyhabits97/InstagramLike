@@ -58,7 +58,6 @@ class HomeController: UICollectionViewController {
         handleRefresh()
     }
     func handleCamera() {
-        print("Show camera")
         let cameraController = CameraController()
         present(cameraController, animated: true)
     }
