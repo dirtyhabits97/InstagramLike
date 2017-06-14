@@ -37,6 +37,7 @@ class HomeController: UICollectionViewController {
     }
     fileprivate func setupNavigationItems() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "camera3").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleCamera))
     }
     fileprivate func registerCells() {
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
@@ -55,6 +56,11 @@ class HomeController: UICollectionViewController {
     }
     func handleUpdateFeed() {
         handleRefresh()
+    }
+    func handleCamera() {
+        print("Show camera")
+        let cameraController = CameraController()
+        present(cameraController, animated: true)
     }
     
     // MARK: - Fetch Methods

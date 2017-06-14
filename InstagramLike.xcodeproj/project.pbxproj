@@ -22,6 +22,7 @@
 		7C4AB6D91EE6321B001C8834 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7C4AB6D81EE6321B001C8834 /* Assets.xcassets */; };
 		7C4AB6DC1EE6321B001C8834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C4AB6DA1EE6321B001C8834 /* LaunchScreen.storyboard */; };
 		7C4AB6E41EE633E8001C8834 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4AB6E31EE633E8001C8834 /* SnapKit.framework */; };
+		7C6732CE1EF1C5D600645DC4 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732CD1EF1C5D600645DC4 /* CameraController.swift */; };
 		7C838C061EE9E2C5007168A2 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */; };
 		7C838C081EE9F0B1007168A2 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */; };
 		7C8473531EEB4B03004122FF /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8473521EEB4B03004122FF /* SharePhotoController.swift */; };
@@ -53,6 +54,7 @@
 		7C4AB6DB1EE6321B001C8834 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7C4AB6DD1EE6321B001C8834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C4AB6E31EE633E8001C8834 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = "Pods/../build/Release-iphoneos/SnapKit/SnapKit.framework"; sourceTree = "<group>"; };
+		7C6732CD1EF1C5D600645DC4 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		7C8473521EEB4B03004122FF /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		7C4AB6D01EE6321B001C8834 /* InstagramLike */ = {
 			isa = PBXGroup;
 			children = (
+				7C6732CC1EF1C5C200645DC4 /* Camera */,
 				7C1F7A3A1EEF650500E74A6B /* Search */,
 				7C1F7A331EEF093B00E74A6B /* Home */,
 				7CC860EF1EEEFB88001F9B06 /* Util */,
@@ -162,6 +165,14 @@
 				7C4AB6DD1EE6321B001C8834 /* Info.plist */,
 			);
 			path = InstagramLike;
+			sourceTree = "<group>";
+		};
+		7C6732CC1EF1C5C200645DC4 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				7C6732CD1EF1C5D600645DC4 /* CameraController.swift */,
+			);
+			name = Camera;
 			sourceTree = "<group>";
 		};
 		7C838C041EE9E2A1007168A2 /* Add Photo */ = {
@@ -347,6 +358,7 @@
 				7CC860F11EEEFB9E001F9B06 /* CustomImageView.swift in Sources */,
 				7C1F7A3C1EEF651600E74A6B /* UserSearchController.swift in Sources */,
 				7C9606721EE8B59600A20BFF /* UserProfileHeader.swift in Sources */,
+				7C6732CE1EF1C5D600645DC4 /* CameraController.swift in Sources */,
 				7CC860EC1EEEEF49001F9B06 /* Post.swift in Sources */,
 				7C96066F1EE8AA5400A20BFF /* UserProfileController.swift in Sources */,
 				7C8473531EEB4B03004122FF /* SharePhotoController.swift in Sources */,
