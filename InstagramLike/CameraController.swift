@@ -10,7 +10,10 @@ import UIKit
 import AVFoundation
 import SnapKit
 
-class CameraController: UIViewController {
+class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
+    
+    // MARK: - Object References
+    let output = AVCapturePhotoOutput()
     
     // MARK: - Interface Objects
     
@@ -52,7 +55,6 @@ class CameraController: UIViewController {
         }
         
         // 2. setup outputs
-        let output = AVCapturePhotoOutput()
         if captureSession.canAddOutput(output) {
             captureSession.addOutput(output)
         }
@@ -84,9 +86,25 @@ class CameraController: UIViewController {
     // MARK: - Handle Methods
     
     func handleCapturePhoto() {
-        
+        let settings = AVCapturePhotoSettings()
+        guard let previewFormatType = settings.availablePreviewPhotoPixelFormatTypes.first else { return }
+        settings.previewPhotoFormat = [kCVPixelBufferPixelFormatTypeKey as String : previewFormatType]
+        output.capturePhoto(with: settings, delegate: self)
     }
     func handleDismiss() {
         dismiss(animated: true)
+    }
+    
+    // MARK: - CapturePhotoDelegate Methods
+    func capture(_ captureOutput: AVCapturePhotoOutput, didFinishProcessingPhotoSampleBuffer photoSampleBuffer: CMSampleBuffer?, previewPhotoSampleBuffer: CMSampleBuffer?, resolvedSettings: AVCaptureResolvedPhotoSettings, bracketSettings: AVCaptureBracketedStillImageSettings?, error: Error?) {
+        guard let buffer = photoSampleBuffer else { return }
+        guard let imageData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer) else { return }
+        let previewImage = UIImage(data: imageData)
+        let previewImageView = UIImageView(image: previewImage)
+        view.addSubview(previewImageView)
+        previewImageView.snp.makeConstraints { (make) in
+            make.edges.equalTo(self.view)
+        }
+        print("Finish processing photo sample buffer...")
     }
 }
