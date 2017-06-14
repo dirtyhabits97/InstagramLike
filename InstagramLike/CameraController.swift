@@ -12,6 +12,11 @@ import SnapKit
 
 class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
     
+    // MARK: - ViewController Properties    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     // MARK: - Object References
     let output = AVCapturePhotoOutput()
     
@@ -100,11 +105,12 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate{
         guard let buffer = photoSampleBuffer else { return }
         guard let imageData = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: previewPhotoSampleBuffer) else { return }
         let previewImage = UIImage(data: imageData)
-        let previewImageView = UIImageView(image: previewImage)
-        view.addSubview(previewImageView)
-        previewImageView.snp.makeConstraints { (make) in
+        
+        let containerView = PreviewPhotoContainerView()
+        containerView.previewImageView.image = previewImage
+        view.addSubview(containerView)
+        containerView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-        print("Finish processing photo sample buffer...")
     }
 }

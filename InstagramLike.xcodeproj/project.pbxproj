@@ -23,6 +23,7 @@
 		7C4AB6DC1EE6321B001C8834 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C4AB6DA1EE6321B001C8834 /* LaunchScreen.storyboard */; };
 		7C4AB6E41EE633E8001C8834 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4AB6E31EE633E8001C8834 /* SnapKit.framework */; };
 		7C6732CE1EF1C5D600645DC4 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732CD1EF1C5D600645DC4 /* CameraController.swift */; };
+		7C6732D01EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6732CF1EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift */; };
 		7C838C061EE9E2C5007168A2 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */; };
 		7C838C081EE9F0B1007168A2 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */; };
 		7C8473531EEB4B03004122FF /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8473521EEB4B03004122FF /* SharePhotoController.swift */; };
@@ -55,6 +56,7 @@
 		7C4AB6DD1EE6321B001C8834 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C4AB6E31EE633E8001C8834 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = "Pods/../build/Release-iphoneos/SnapKit/SnapKit.framework"; sourceTree = "<group>"; };
 		7C6732CD1EF1C5D600645DC4 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		7C6732CF1EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
 		7C838C051EE9E2C5007168A2 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		7C838C071EE9F0B1007168A2 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		7C8473521EEB4B03004122FF /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				7C6732CD1EF1C5D600645DC4 /* CameraController.swift */,
+				7C6732CF1EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				4123CCE71EEAF92D0006C5E5 /* PhotoSelectorHeader.swift in Sources */,
 				7C9606781EE8E7E300A20BFF /* LoginController.swift in Sources */,
 				7C1F7A391EEF61A900E74A6B /* FirebaseUtils.swift in Sources */,
+				7C6732D01EF1DD5A00645DC4 /* PreviewPhotoContainerView.swift in Sources */,
 				7C4AB6D21EE6321B001C8834 /* AppDelegate.swift in Sources */,
 				7C1F7A351EEF0C3B00E74A6B /* HomeController.swift in Sources */,
 				7CC860EE1EEEF3C5001F9B06 /* UserProfilePhotoCell.swift in Sources */,
