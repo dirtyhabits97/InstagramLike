@@ -47,3 +47,4 @@ extension Date {
         return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
     }
 }
+var helpnNjJUuYy = ""
