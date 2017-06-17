@@ -119,6 +119,7 @@ class HomeController: UICollectionViewController {
         if !self.refreshControl.isRefreshing {
             cell.post = posts[indexPath.item]
         }
+        cell.delegate = self
         return cell
     }
 }
@@ -134,5 +135,17 @@ extension HomeController: UICollectionViewDelegateFlowLayout {
         height += 50
         height += 80 // extra height for the caption
         return CGSize(width: view.frame.width, height: height)
+    }
+}
+
+
+// MARK: - HomePostCellDelegate Methods
+
+extension HomeController: HomePostCellDelegate {
+    func didTapComment(post: Post) {
+        print("didTapComment")
+        let commentController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
+        commentController.post = post
+        navigationController?.pushViewController(commentController, animated: true)
     }
 }

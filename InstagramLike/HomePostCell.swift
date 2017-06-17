@@ -22,6 +22,7 @@ class HomePostCell: UICollectionViewCell {
             setupAttributedCaption()
         }
     }
+    weak var delegate: HomePostCellDelegate?
     
     // MARK: - Interface Objects
     
@@ -59,9 +60,10 @@ class HomePostCell: UICollectionViewCell {
         return button
     }()
     
-    let commentButton: UIButton = {
+    lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "comment").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
         return button
     }()
     
@@ -166,4 +168,10 @@ class HomePostCell: UICollectionViewCell {
         captionLabel.attributedText = attributedText
     }
     
+    // MARK - Handle Methods
+    
+    func handleComment() {
+        guard let post = post else { return }
+        delegate?.didTapComment(post: post)
+    }
 }
