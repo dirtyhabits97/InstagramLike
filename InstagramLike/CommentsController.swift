@@ -43,8 +43,12 @@ class CommentsController: UICollectionViewController {
         submitButon.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         submitButon.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
         
+        let separatorView = UIView()
+        separatorView.backgroundColor = UIColor(r: 230, g: 230, b: 230)
+        
         containerView.addSubview(submitButon)
         containerView.addSubview(self.commentTextField)
+        containerView.addSubview(separatorView)
         submitButon.snp.makeConstraints { (make) in
             make.bottom.top.equalTo(containerView)
             make.right.equalTo(containerView.snp.right).offset(-12)
@@ -55,6 +59,10 @@ class CommentsController: UICollectionViewController {
             make.right.equalTo(submitButon.snp.left).offset(-4)
             make.left.equalTo(containerView).offset(12)
         }
+        separatorView.snp.makeConstraints({ (make) in
+            make.right.left.top.equalTo(containerView)
+            make.height.equalTo(1)
+        })
         
         return containerView
     }()
@@ -70,9 +78,13 @@ class CommentsController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = .white
+        collectionView?.alwaysBounceVertical = true
+        collectionView?.keyboardDismissMode = .interactive
         width = view.frame.width
         tabBarController?.tabBar.isHidden = true
         navigationItem.title = "Comments"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.tintColor = .black
         
         collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
@@ -118,9 +130,12 @@ class CommentsController: UICollectionViewController {
         let reference = FIRDatabase.database().reference().child("comments").child(postId)
         reference.observe(.childAdded, with: { (snapshot) in
             guard let dictionary = snapshot.value as? [String:Any] else { return }
-            let comment = Comment(dictionary: dictionary)
-            self.comments.append(comment)
-            self.collectionView?.reloadData()
+            guard let uid = dictionary["uid"] as? String else { return }
+            FIRDatabase.fetchUser(withUID: uid, completion: { (user) in
+                let comment = Comment(user: user, dictionary: dictionary)
+                self.comments.append(comment)
+                self.collectionView?.reloadData()
+            })
         }) { (error) in
             print("Failed to fetch comments: ", error)
         }
@@ -143,6 +158,19 @@ class CommentsController: UICollectionViewController {
 
 extension CommentsController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 60)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let dummyCell = CommentCell(frame: frame)
+        dummyCell.comment = comments[indexPath.item]
+        dummyCell.layoutIfNeeded()
+        let targetSize = CGSize(width: view.frame.width, height: 1000)
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        let height = max(40 + 8 + 8, estimatedSize.height)
+        return CGSize(width: view.frame.width, height: height)
     }
+    
+    // space between rows
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
 }

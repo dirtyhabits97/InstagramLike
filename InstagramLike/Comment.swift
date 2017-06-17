@@ -12,10 +12,10 @@ struct Comment {
     let creationDate: Date
     let text: String
     let uid: String
-//    let post: Post
+    let user: User
     
-    init(/*post: Post,*/dictionary: [String:Any]) {
-//        self.post = post
+    init(user: User, dictionary: [String:Any]) {
+        self.user = user
         self.uid = dictionary["uid"] as? String ?? ""
         self.text = dictionary["text"] as? String ?? ""
         let secondsFrom1970 = dictionary["creationDate"] as? Double ?? 0
