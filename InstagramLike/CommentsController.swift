@@ -12,8 +12,12 @@ import Firebase
 
 class CommentsController: UICollectionViewController {
     
+    // MARK: - Object Ids
+    private let cellId = "cellId"
+    
     // MARK: - Object Variables
     var post: Post?
+    var comments = [Comment]()
     
     // MARK: - CommentsController Properties
     override var inputAccessoryView: UIView? {
@@ -65,10 +69,15 @@ class CommentsController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.backgroundColor = .white
         width = view.frame.width
         tabBarController?.tabBar.isHidden = true
         navigationItem.title = "Comments"
-        view.backgroundColor = UIColor.cyan
+        
+        collectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
+        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: -50, right: 0)
+        registerCells()
+        fetchComments()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -80,10 +89,16 @@ class CommentsController: UICollectionViewController {
         resignFirstResponder()
     }
     
+    
+    // MARK: - Setup Methods
+    
+    fileprivate func registerCells() {
+        collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: cellId)
+    }
+    
     // MARK: - Handle Methods
     
     func handleSubmit() {
-        print("Handling Submit...")
         guard let postId = post?.id else { return }
         guard let uid = post?.user.uid else { return }
         let values = ["text" : commentTextField.text ?? "", "creationDate" : Date().timeIntervalSince1970, "uid" : uid] as [String : Any]
@@ -94,5 +109,40 @@ class CommentsController: UICollectionViewController {
             }
         }
         print("Succesfully saved comment to database")
+    }
+    
+    // MARK: - Fetch Methods
+    
+    fileprivate func fetchComments() {
+        guard let postId = post?.id else { return }
+        let reference = FIRDatabase.database().reference().child("comments").child(postId)
+        reference.observe(.childAdded, with: { (snapshot) in
+            guard let dictionary = snapshot.value as? [String:Any] else { return }
+            let comment = Comment(dictionary: dictionary)
+            self.comments.append(comment)
+            self.collectionView?.reloadData()
+        }) { (error) in
+            print("Failed to fetch comments: ", error)
+        }
+    }
+    
+    // MARK: - CollectionView Methods
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return comments.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentCell
+        cell.comment = comments[indexPath.item]
+        return cell
+    }
+}
+
+
+// MARK: - FlowLayoutDelegate Methods
+
+extension CommentsController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 60)
     }
 }
