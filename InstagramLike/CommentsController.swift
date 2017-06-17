@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-
+import Firebase
 
 class CommentsController: UICollectionViewController {
     
@@ -39,17 +39,14 @@ class CommentsController: UICollectionViewController {
         submitButon.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         submitButon.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
         
-        let textField = UITextField()
-        textField.placeholder = "Enter Comment"
-        
         containerView.addSubview(submitButon)
-        containerView.addSubview(textField)
+        containerView.addSubview(self.commentTextField)
         submitButon.snp.makeConstraints { (make) in
             make.bottom.top.equalTo(containerView)
             make.right.equalTo(containerView.snp.right).offset(-12)
             make.width.equalTo(50)
         }
-        textField.snp.makeConstraints { (make) in
+        self.commentTextField.snp.makeConstraints { (make) in
             make.bottom.top.equalTo(containerView)
             make.right.equalTo(submitButon.snp.left).offset(-4)
             make.left.equalTo(containerView).offset(12)
@@ -57,6 +54,12 @@ class CommentsController: UICollectionViewController {
         
         return containerView
     }()
+    let commentTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter Comment"
+        return textField
+    }()
+
     
     // MARK: - View Lifecycle
     
@@ -81,5 +84,15 @@ class CommentsController: UICollectionViewController {
     
     func handleSubmit() {
         print("Handling Submit...")
+        guard let postId = post?.id else { return }
+        guard let uid = post?.user.uid else { return }
+        let values = ["text" : commentTextField.text ?? "", "creationDate" : Date().timeIntervalSince1970, "uid" : uid] as [String : Any]
+        FIRDatabase.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { (error, ref) in
+            if let err = error {
+                print("Failed to insert comment to database: ", err)
+                return
+            }
+        }
+        print("Succesfully saved comment to database")
     }
 }
