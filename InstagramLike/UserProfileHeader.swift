@@ -23,6 +23,8 @@ class UserProfileHeader: UICollectionViewCell {
         }
     }
     
+    weak var delegate: UserProfileHeaderDelegate?
+    
     // MARK: - Interface Objects
     
     let profileImageView: CustomImageView = {
@@ -32,17 +34,19 @@ class UserProfileHeader: UICollectionViewCell {
         return iv
     }()
     
-    let gridButton: UIButton = {
+    lazy var gridButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "grid"), for: .normal)
-//        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        //        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.addTarget(self, action: #selector(handleChangeToGridView), for: .touchUpInside)
         return button
     }()
     
-    let listButton: UIButton = {
+    lazy var listButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "list"), for: .normal)
         button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.addTarget(self, action: #selector(handleChangeToListView), for: .touchUpInside)
         return button
     }()
     
@@ -212,7 +216,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     fileprivate func setFollowStyle() {
         self.editProfileFollowButton.setTitle("Follow", for: .normal)
-        self.editProfileFollowButton.backgroundColor = UIColor(r: 17, g: 154, b: 237)
+        self.editProfileFollowButton.backgroundColor = .mainBlue()
         self.editProfileFollowButton.setTitleColor(.white, for: .normal)
         self.editProfileFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
     }
@@ -250,5 +254,15 @@ class UserProfileHeader: UICollectionViewCell {
                 self.setUnfollowStyle()
             }
         }
+    }
+    func handleChangeToListView() {
+        listButton.tintColor = UIColor.mainBlue()
+        gridButton.tintColor = UIColor(white: 0, alpha: 0.2)
+        delegate?.didChangeToListView()
+    }
+    func handleChangeToGridView() {
+        gridButton.tintColor = UIColor.mainBlue()
+        listButton.tintColor = UIColor(white: 0, alpha: 0.2)
+        delegate?.didChangeToGridView()
     }
 }

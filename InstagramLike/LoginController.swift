@@ -131,7 +131,7 @@ class LoginController: UIViewController {
     
     func handleTextInputChange() {
         let isFormValid = !(emailTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
-        loginButton.backgroundColor = isFormValid ? UIColor(r: 17, g: 154, b: 237) : UIColor(r: 149, g: 204, b: 244)
+        loginButton.backgroundColor = isFormValid ? .mainBlue() : UIColor(r: 149, g: 204, b: 244)
         loginButton.isEnabled = isFormValid ? true : false
     }
     

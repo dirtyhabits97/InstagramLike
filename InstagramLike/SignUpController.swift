@@ -163,7 +163,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     func handleTextInputChange() {
         let isFormValid = !(emailTextField.text?.isEmpty ?? true) && !(usernameTextField.text?.isEmpty ?? true) && !(passwordTextField.text?.isEmpty ?? true)
-        signupButton.backgroundColor = isFormValid ? UIColor(r: 17, g: 154, b: 237) : UIColor(r: 149, g: 204, b: 244)
+        signupButton.backgroundColor = isFormValid ? .mainBlue() : UIColor(r: 149, g: 204, b: 244)
         signupButton.isEnabled = isFormValid ? true : false
     }
     

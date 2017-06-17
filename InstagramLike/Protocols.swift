@@ -12,3 +12,8 @@ protocol HomePostCellDelegate: class {
     func didTapComment(post: Post)
     func didLike(for cell: HomePostCell)
 }
+
+protocol UserProfileHeaderDelegate: class {
+    func didChangeToListView()
+    func didChangeToGridView()
+}
