@@ -79,14 +79,29 @@ class HomeController: UICollectionViewController {
                 guard let dictionary = value as? [String:Any] else { return }
                 var post = Post(user: user, dictionary: dictionary)
                 post.id = key
-                self.posts.append(post)
+                
+                
+                guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+                FIRDatabase.database().reference().child("likes").child(key).child(uid).observeSingleEvent(of: .value, with: { (snap) in
+                    if let like = snap.value as? Int, like == 1 {
+                        post.hasLiked = true
+                    } else {
+                        post.hasLiked = false
+                    }
+                    self.posts.append(post)
+                    self.posts.sort(by: { (p1, p2) -> Bool in
+                    return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                    })
+                    
+                    
+                    self.collectionView?.reloadData()
+                    
+                }, withCancel: { (err) in
+                    print("Failed to fetch like: ", err)
+                })
             })
-            self.posts.sort(by: { (p1, p2) -> Bool in
-                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
-            })
-            self.collectionView?.reloadData()
-        }) { (err) in
-            print("Failed to fetch posts: ", err)
+        }) { (error) in
+            print("Failed to fetch posts: ", error)
         }
     }
     fileprivate func fetchFollowingUserIds() {
@@ -148,5 +163,22 @@ extension HomeController: HomePostCellDelegate {
         let commentController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
         commentController.post = post
         navigationController?.pushViewController(commentController, animated: true)
+    }
+    func didLike(for cell: HomePostCell) {
+        guard let indexPath = collectionView?.indexPath(for: cell) else { return }
+        var post = posts[indexPath.item]
+        guard let postId = post.id else { return }
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        let values = [uid:post.hasLiked == true ? 0 : 1]
+        FIRDatabase.database().reference().child("likes").child(postId).updateChildValues(values) { (error, ref) in
+            if let err = error {
+                print("Failed to like post", err)
+                return
+            }
+            print("Succesfully liked post")
+            post.hasLiked = !post.hasLiked
+            self.posts[indexPath.item] = post
+            self.collectionView?.reloadItems(at: [indexPath])
+        }
     }
 }

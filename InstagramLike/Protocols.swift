@@ -10,4 +10,5 @@ import Foundation
 
 protocol HomePostCellDelegate: class {
     func didTapComment(post: Post)
+    func didLike(for cell: HomePostCell)
 }
